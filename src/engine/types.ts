@@ -25,6 +25,18 @@ export const TIME_CONTROL_OPTIONS: { id: string; label: string; tc: TimeControl 
   { id: 'unlimited', label: 'Unlimited',         tc: null },
 ]
 
+export type BoardTheme = 'walnut' | 'glass' | 'forest' | 'marble' | 'graffiti' | 'ocean'
+
+/** preview: [lightSquare, darkSquare] colors for the picker swatch */
+export const BOARD_THEMES: { id: BoardTheme; label: string; preview: [string, string] }[] = [
+  { id: 'walnut',   label: 'Walnut',   preview: ['#ecdab9', '#ae8a68'] },
+  { id: 'glass',    label: 'Glass',    preview: ['#dce8f5', '#7da3c8'] },
+  { id: 'forest',   label: 'Forest',   preview: ['#d9e3bb', '#6a8f4f'] },
+  { id: 'marble',   label: 'Marble',   preview: ['#eceae5', '#858b94'] },
+  { id: 'graffiti', label: 'Graffiti', preview: ['#b4b4b4', '#e91e8c'] },
+  { id: 'ocean',    label: 'Ocean',    preview: ['#dee3e6', '#6d8ba0'] },
+]
+
 export function timeControlId(tc: TimeControl | null): string {
   const found = TIME_CONTROL_OPTIONS.find((o) =>
     o.tc === null ? tc === null : tc !== null && o.tc.baseMin === tc.baseMin && o.tc.incSec === tc.incSec,

@@ -1,10 +1,19 @@
+import { useState, useEffect } from 'react'
 import { TopBar } from './components/TopBar'
 import { Board } from './components/Board'
 import { GameStatus } from './components/GameStatus'
 import { MoveHistory } from './components/MoveHistory'
 import { PromotionModal } from './components/PromotionModal'
+import { GameOverModal } from './components/GameOverModal'
 import { useChessGame } from './hooks/useChessGame'
+import type { BoardTheme } from './engine/types'
+import { BOARD_THEMES } from './engine/types'
 import './App.css'
+
+function loadTheme(): BoardTheme {
+  const saved = localStorage.getItem('boardTheme')
+  return BOARD_THEMES.some((t) => t.id === saved) ? (saved as BoardTheme) : 'walnut'
+}
 
 export default function App() {
   const {
@@ -33,6 +42,24 @@ export default function App() {
     setTimeControl,
   } = useChessGame()
 
+  const [boardTheme, setBoardTheme] = useState<BoardTheme>(loadTheme)
+  useEffect(() => {
+    localStorage.setItem('boardTheme', boardTheme)
+  }, [boardTheme])
+
+  // Result popup: appears shortly after the game ends so the final move lands first
+  const isOver =
+    status === 'checkmate' || status === 'stalemate' || status === 'draw' || status === 'timeout'
+  const [showResult, setShowResult] = useState(false)
+  useEffect(() => {
+    if (!isOver) {
+      setShowResult(false)
+      return
+    }
+    const t = window.setTimeout(() => setShowResult(true), 700)
+    return () => window.clearTimeout(t)
+  }, [isOver])
+
   return (
     <div className="app">
       <TopBar
@@ -52,6 +79,7 @@ export default function App() {
             lastMove={lastMove}
             checkSquare={checkSquare}
             orientation={orientation}
+            theme={boardTheme}
             onSquareClick={handleSquareClick}
           />
         </div>
@@ -69,6 +97,8 @@ export default function App() {
             blackMs={blackMs}
             clockStarted={clockStarted}
             onTimeControlChange={setTimeControl}
+            boardTheme={boardTheme}
+            onBoardThemeChange={setBoardTheme}
           />
           <MoveHistory moves={moveHistory} />
         </aside>
@@ -76,6 +106,16 @@ export default function App() {
 
       {pendingPromotion && (
         <PromotionModal color={playerColor} onSelect={handlePromotion} />
+      )}
+
+      {showResult && (
+        <GameOverModal
+          status={status}
+          turn={turn}
+          playerColor={playerColor}
+          onNewGame={newGame}
+          onClose={() => setShowResult(false)}
+        />
       )}
     </div>
   )

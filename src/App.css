@@ -15,11 +15,6 @@
   --accent:       #6f9c6f;
   --danger:       #e05d4d;
 
-  /* Walnut & maple board */
-  --sq-light:     #ecdab9;
-  --sq-dark:      #ae8a68;
-  --sq-last-light: #d8d077;
-  --sq-last-dark:  #b2a44a;
   --sq-check:     #ff6b5e;
 
   --board-size: min(640px, calc(100vh - 140px), 92vw);
@@ -135,21 +130,97 @@ html, body, #root {
   max-height: calc(var(--board-size) + 36px);
 }
 
-/* ── Board Frame (wood) ───────────────────────────────────── */
+/* ── Board Frame & Themes ─────────────────────────────────── */
 .board-frame {
   padding: 16px;
   border-radius: 10px;
-  background:
-    linear-gradient(160deg, rgba(255,255,255,0.06) 0%, transparent 30%),
-    repeating-linear-gradient(
-      95deg,
-      #5d3a1c 0px, #6b4423 7px, #5a3719 14px, #69431f 22px, #54341a 30px
-    );
+  background: var(--frame-bg);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.12),
     inset 0 -1px 0 rgba(0,0,0,0.4),
     0 30px 80px rgba(0,0,0,0.65),
     0 10px 28px rgba(0,0,0,0.5);
+  transition: background 0.4s;
+}
+
+/* Default theme: walnut */
+.board-frame {
+  --light-bg:
+    linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 45%),
+    repeating-linear-gradient(92deg, transparent 0 6px, rgba(160,120,70,0.05) 6px 9px),
+    #ecdab9;
+  --dark-bg:
+    linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 45%),
+    repeating-linear-gradient(88deg, transparent 0 5px, rgba(60,35,15,0.1) 5px 8px),
+    #ae8a68;
+  --frame-bg:
+    linear-gradient(160deg, rgba(255,255,255,0.06) 0%, transparent 30%),
+    repeating-linear-gradient(
+      95deg,
+      #5d3a1c 0px, #6b4423 7px, #5a3719 14px, #69431f 22px, #54341a 30px
+    );
+  --coord-on-light: #ae8a68;
+  --coord-on-dark: #ecdab9;
+}
+
+.board-frame[data-theme='glass'] {
+  --light-bg: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(220,235,250,0.3) 100%);
+  --dark-bg: linear-gradient(135deg, rgba(110,150,195,0.55) 0%, rgba(70,105,150,0.45) 100%);
+  --frame-bg: linear-gradient(160deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 60%);
+  --coord-on-light: #4a6c92;
+  --coord-on-dark: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.board-frame[data-theme='glass'] .board-grid {
+  backdrop-filter: blur(10px);
+}
+
+.board-frame[data-theme='forest'] {
+  --light-bg:
+    linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 50%),
+    #d9e3bb;
+  --dark-bg:
+    linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(40,70,25,0.18) 0%, transparent 60%),
+    #6a8f4f;
+  --frame-bg:
+    linear-gradient(160deg, rgba(255,255,255,0.05) 0%, transparent 30%),
+    repeating-linear-gradient(95deg, #2f4022 0 8px, #3a4f2a 8px 16px, #283a1c 16px 26px);
+  --coord-on-light: #6a8f4f;
+  --coord-on-dark: #d9e3bb;
+}
+
+.board-frame[data-theme='marble'] {
+  --light-bg: linear-gradient(120deg, #f2f0eb 0%, #e0ddd5 35%, #efede8 65%, #e4e1da 100%);
+  --dark-bg: linear-gradient(120deg, #9aa0a8 0%, #7b818b 40%, #8e949d 70%, #747a84 100%);
+  --frame-bg: linear-gradient(160deg, #34363b 0%, #1a1b1e 55%, #26282c 100%);
+  --coord-on-light: #7b818b;
+  --coord-on-dark: #f2f0eb;
+}
+
+.board-frame[data-theme='graffiti'] {
+  --light-bg:
+    linear-gradient(135deg, rgba(255,255,255,0.28) 0%, transparent 50%),
+    repeating-linear-gradient(45deg, transparent 0 9px, rgba(0,0,0,0.04) 9px 18px),
+    #b4b4b4;
+  --dark-bg:
+    linear-gradient(135deg, rgba(233,30,140,0.3) 0%, rgba(124,77,255,0.18) 45%, rgba(0,188,212,0.16) 100%),
+    #2c2c2c;
+  --frame-bg: linear-gradient(100deg, #e91e8c 0%, #7c4dff 32%, #00bcd4 64%, #ffd600 100%);
+  --coord-on-light: #3a3a3a;
+  --coord-on-dark: #f0f0f0;
+}
+
+.board-frame[data-theme='ocean'] {
+  --light-bg:
+    linear-gradient(135deg, rgba(255,255,255,0.32) 0%, transparent 50%),
+    #dee3e6;
+  --dark-bg:
+    linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%),
+    #6d8ba0;
+  --frame-bg: linear-gradient(160deg, #1b4055 0%, #0d2230 65%, #143546 100%);
+  --coord-on-light: #6d8ba0;
+  --coord-on-dark: #dee3e6;
 }
 
 .board-area {
@@ -201,19 +272,8 @@ html, body, #root {
   user-select: none;
 }
 
-.square-light {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 45%),
-    repeating-linear-gradient(92deg, transparent 0 6px, rgba(160,120,70,0.05) 6px 9px),
-    var(--sq-light);
-}
-
-.square-dark {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 45%),
-    repeating-linear-gradient(88deg, transparent 0 5px, rgba(60,35,15,0.1) 5px 8px),
-    var(--sq-dark);
-}
+.square-light { background: var(--light-bg); }
+.square-dark  { background: var(--dark-bg); }
 
 /* Hover + selection overlays */
 .square::after {
@@ -232,15 +292,14 @@ html, body, #root {
   box-shadow: inset 0 0 0 3px rgba(60, 140, 70, 0.65);
 }
 
-.square-light.square-last-move {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 45%),
-    var(--sq-last-light);
-}
-.square-dark.square-last-move {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 45%),
-    var(--sq-last-dark);
+/* Last move: translucent overlay so it works on every theme */
+.square-last-move::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(213, 200, 75, 0.45);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .square-check {
@@ -262,8 +321,8 @@ html, body, #root {
 .coord-rank { top: 3px; left: 4px; }
 .coord-file { bottom: 2px; right: 5px; }
 
-.square-light .coord { color: var(--sq-dark); }
-.square-dark .coord  { color: var(--sq-light); }
+.square-light .coord { color: var(--coord-on-light); }
+.square-dark .coord  { color: var(--coord-on-dark); }
 
 /* Move indicators */
 .move-dot {
@@ -592,6 +651,151 @@ html, body, #root {
   background: var(--border);
   border-color: var(--gold);
   transform: scale(1.1);
+}
+
+/* ── Theme Picker ─────────────────────────────────────────── */
+.theme-control { margin-top: 14px; }
+
+.theme-swatches {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.theme-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+  padding: 0;
+}
+
+.theme-swatch:hover {
+  transform: scale(1.12);
+  border-color: var(--text-muted);
+}
+
+.theme-swatch-active {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(212,175,90,0.4);
+}
+
+/* ── Game Over Modal ──────────────────────────────────────── */
+.result-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,8,6,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(5px);
+  animation: fade-in 0.25s ease;
+  overflow: hidden;
+}
+
+.result-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 48px;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.85);
+  animation: result-pop 0.35s cubic-bezier(0.18, 1.25, 0.4, 1);
+  max-width: 90vw;
+}
+
+.result-win  { border-color: var(--gold); box-shadow: 0 0 60px rgba(212,175,90,0.25), 0 30px 90px rgba(0,0,0,0.85); }
+.result-lose { border-color: var(--danger); }
+
+.result-icon {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 14px;
+  animation: icon-bounce 0.55s cubic-bezier(0.18, 1.4, 0.4, 1) 0.15s backwards;
+}
+
+.result-title {
+  font-size: 34px;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+}
+
+.result-win .result-title  { color: var(--gold); }
+.result-lose .result-title { color: var(--danger); }
+
+.result-subtitle {
+  font-size: 14px;
+  font-family: monospace;
+  color: var(--text-muted);
+  margin-bottom: 26px;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.result-actions .btn { padding: 10px 22px; font-size: 13px; }
+
+@keyframes result-pop {
+  from { transform: scale(0.7) translateY(30px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes icon-bounce {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+/* Confetti (win only) */
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.confetti i {
+  position: absolute;
+  top: -24px;
+  width: 9px;
+  height: 16px;
+  border-radius: 2px;
+  animation: confetti-fall 3s linear infinite;
+}
+
+.confetti i:nth-child(6n+1) { background: var(--gold); }
+.confetti i:nth-child(6n+2) { background: #e05d4d; }
+.confetti i:nth-child(6n+3) { background: #6f9c6f; }
+.confetti i:nth-child(6n+4) { background: #5b8dee; }
+.confetti i:nth-child(6n+5) { background: #e91e8c; }
+.confetti i:nth-child(6n+6) { background: #f5f0e6; }
+
+.confetti i:nth-child(1)  { left: 5%;  animation-delay: 0s;    animation-duration: 2.6s; }
+.confetti i:nth-child(2)  { left: 12%; animation-delay: 0.4s;  animation-duration: 3.2s; }
+.confetti i:nth-child(3)  { left: 19%; animation-delay: 0.9s;  animation-duration: 2.8s; }
+.confetti i:nth-child(4)  { left: 26%; animation-delay: 0.2s;  animation-duration: 3.4s; }
+.confetti i:nth-child(5)  { left: 33%; animation-delay: 1.1s;  animation-duration: 2.7s; }
+.confetti i:nth-child(6)  { left: 40%; animation-delay: 0.6s;  animation-duration: 3.1s; }
+.confetti i:nth-child(7)  { left: 47%; animation-delay: 1.4s;  animation-duration: 2.9s; }
+.confetti i:nth-child(8)  { left: 54%; animation-delay: 0.1s;  animation-duration: 3.3s; }
+.confetti i:nth-child(9)  { left: 61%; animation-delay: 0.8s;  animation-duration: 2.6s; }
+.confetti i:nth-child(10) { left: 68%; animation-delay: 1.2s;  animation-duration: 3.0s; }
+.confetti i:nth-child(11) { left: 75%; animation-delay: 0.3s;  animation-duration: 2.8s; }
+.confetti i:nth-child(12) { left: 82%; animation-delay: 1.0s;  animation-duration: 3.2s; }
+.confetti i:nth-child(13) { left: 89%; animation-delay: 0.5s;  animation-duration: 2.7s; }
+.confetti i:nth-child(14) { left: 96%; animation-delay: 1.3s;  animation-duration: 3.1s; }
+.confetti i:nth-child(15) { left: 22%; animation-delay: 1.7s;  animation-duration: 2.9s; }
+.confetti i:nth-child(16) { left: 71%; animation-delay: 1.6s;  animation-duration: 3.0s; }
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(660deg); opacity: 0.7; }
 }
 
 /* ── Animations ───────────────────────────────────────────── */
