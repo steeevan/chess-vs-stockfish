@@ -1,4 +1,4 @@
-import type { Square as SquareType, IdedPiece, Color } from '../engine/types'
+import type { Square as SquareType, IdedPiece, Color, BoardTheme } from '../engine/types'
 import { FILE_LABELS, RANK_LABELS } from '../engine/types'
 import { Square } from './Square'
 import { Piece } from './Piece'
@@ -10,6 +10,7 @@ type Props = {
   lastMove: { from: SquareType; to: SquareType } | null
   checkSquare: SquareType | null
   orientation: Color
+  theme: BoardTheme
   onSquareClick: (square: SquareType) => void
 }
 
@@ -29,6 +30,7 @@ export function Board({
   lastMove,
   checkSquare,
   orientation,
+  theme,
   onSquareClick,
 }: Props) {
   const ranks = orientation === 'w' ? RANK_LABELS : [...RANK_LABELS].reverse()
@@ -38,7 +40,7 @@ export function Board({
   const sortedPieces = [...pieces].sort((a, b) => a.id - b.id)
 
   return (
-    <div className="board-frame">
+    <div className="board-frame" data-theme={theme}>
       <div className="board-area">
         <div className="board-grid">
           {ranks.map((rank, ri) =>

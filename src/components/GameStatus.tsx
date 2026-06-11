@@ -1,5 +1,5 @@
-import type { GameStatus as GameStatusType, Color, TimeControl } from '../engine/types'
-import { TIME_CONTROL_OPTIONS, timeControlId } from '../engine/types'
+import type { GameStatus as GameStatusType, Color, TimeControl, BoardTheme } from '../engine/types'
+import { TIME_CONTROL_OPTIONS, timeControlId, BOARD_THEMES } from '../engine/types'
 
 type Props = {
   status: GameStatusType
@@ -13,6 +13,8 @@ type Props = {
   blackMs: number | null
   clockStarted: boolean
   onTimeControlChange: (tc: TimeControl | null) => void
+  boardTheme: BoardTheme
+  onBoardThemeChange: (t: BoardTheme) => void
 }
 
 function formatClock(ms: number): string {
@@ -37,6 +39,8 @@ export function GameStatus({
   blackMs,
   clockStarted,
   onTimeControlChange,
+  boardTheme,
+  onBoardThemeChange,
 }: Props) {
   const isGameOver =
     status === 'checkmate' || status === 'stalemate' || status === 'draw' || status === 'timeout'
@@ -110,6 +114,27 @@ export function GameStatus({
           ))}
         </select>
         <p className="control-hint">Changing time restarts the game</p>
+      </div>
+
+      <div className="theme-control">
+        <label className="control-label">Board theme</label>
+        <div className="theme-swatches">
+          {BOARD_THEMES.map((t) => (
+            <button
+              key={t.id}
+              className={`theme-swatch ${boardTheme === t.id ? 'theme-swatch-active' : ''}`}
+              title={t.label}
+              aria-label={`${t.label} board theme`}
+              onClick={() => onBoardThemeChange(t.id)}
+              style={{
+                background: `linear-gradient(135deg, ${t.preview[0]} 50%, ${t.preview[1]} 50%)`,
+              }}
+            />
+          ))}
+        </div>
+        <p className="control-hint">
+          {BOARD_THEMES.find((t) => t.id === boardTheme)?.label}
+        </p>
       </div>
 
       <div className="difficulty-control">
