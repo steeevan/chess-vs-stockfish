@@ -11,7 +11,7 @@ export function Piece({ type, color }: Props) {
     <img
       className="piece"
       src={`/pieces/${color}${type}.svg`}
-      alt={`${color === 'w' ? 'white' : 'black'} ${NAMES[type]}`}
+      alt={`${color === 'w' ? 'red' : 'blue'} ${NAMES[type]}`}
       draggable={false}
     />
   )
